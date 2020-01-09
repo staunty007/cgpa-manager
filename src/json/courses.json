@@ -1,0 +1,27 @@
+[
+    {
+        "title": "Computer Architecture",
+        "code": "COM 312",
+        "unit": 3
+    },
+    {
+        "title": "Operation Research",
+        "code": "STA 312",
+        "unit": 3
+    },
+    {
+        "title": "Mathematical Analysis",
+        "code": "MTH 312",
+        "unit": 2
+    },
+    {
+        "title": "Business Communication",
+        "code": "GNS 311",
+        "unit": 2
+    },
+    {
+        "title": "Operaiting System",
+        "code": "COM 311",
+        "unit": 3
+    }
+]

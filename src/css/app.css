@@ -1,0 +1,63 @@
+/* iOS Cordova Tweak */
+.device-cordova.device-ios {
+  height: 100vh;
+}
+
+/* .md.device-android {
+  --f7-safe-area-top: 24px
+} */
+
+/* Your app custom styles here */
+
+:root {
+    --f7-navbar-bg-color: #2a5f8a;
+    --f7-bars-bg-color: #fff;
+    --f7-navbar-text-color: #fff;
+    --f7-bars-text-color:#fff;
+    --f7-color-lightdark: #605e7c;
+    /* #7f7e95 */
+
+    --f7-theme-color: #2a5f8a;
+    --f7-toast-text-color: #fff;
+}
+
+.md {
+  --f7-toast-bg-color: #2a5f8a;
+  --f7-toast-padding-horizontal: 24px;
+  --f7-toast-padding-vertical: 14px;
+  --f7-toast-border-radius: 4px;
+  --f7-toast-button-min-width: 64px;
+}
+
+
+.theme-lightdark {
+  --f7-theme-color: #605e7c;
+  --f7-theme-color-shade: #5a577c;
+  --f7-theme-color-tint: #6c6a81;
+}
+.color-lightdark {
+  --f7-theme-color: #605e7c;
+}
+.bg-page {
+  background-color: #f9f9f9;
+}
+.bg-landing {
+  background: url('../static/img/eye-glass.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.light {
+  color: #f9f9f9;
+}
+.no-border {
+  border-radius: 0;
+}
+.transparent {
+  background: transparent;
+}
+
+.login_toast {
+  background: #f9f9f9 !important;
+  color: #2a5f8a;
+}
+

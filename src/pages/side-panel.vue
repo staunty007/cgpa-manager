@@ -7,7 +7,7 @@
             <div class="navbar-inner">
                 <div class="left">
                     <a href="#" class="link icon-only">
-                        <img src="/static/img/man.png" height="70" width="70" class="img-rounded" alt="">
+                        <img :src="image" height="70" width="70" class="img-rounded" alt="">
                     </a>
                 </div>
                 <div class="right">
@@ -26,7 +26,7 @@
             <f7-list-item link="/courses/" class="content" title="Courses" panel-close>
                 <f7-icon slot="media" md="material:library_books"></f7-icon>
             </f7-list-item>
-            <f7-list-item link="/add-gcpa/" class="content" title="CGPA" panel-close>
+            <f7-list-item link="/add-gcpa/" class="content" title="Grade" panel-close>
                 <f7-icon slot="media" md="material:poll"></f7-icon>
             </f7-list-item>
             <f7-list-item link="/" class="content" title="Profile" panel-close>
@@ -45,7 +45,11 @@
 
 <script>
     export default {
-
+        data() {
+            return {
+                image: '/static/img/man.png',
+            }
+        }
     }
 </script>
 

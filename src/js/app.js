@@ -27,6 +27,7 @@ import 'firebase/firestore'
 import 'firebase/database'
 import 'firebase/storage'
 
+
 // Init Framework7-Vue Plugin
 Framework7.use(Framework7Vue);
 

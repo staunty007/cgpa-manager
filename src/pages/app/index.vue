@@ -32,7 +32,7 @@
           <f7-card class="demo-card-header-pic">
             <f7-card-header class="no-border img-cgpa" valign="bottom"></f7-card-header>
             <f7-card-footer>
-              <f7-link href="/add-gcpa/"><b>CGPA</b></f7-link>
+              <f7-link href="/add-gcpa/"><b>Grade</b></f7-link>
             </f7-card-footer>
           </f7-card>
         </f7-col>
@@ -71,6 +71,10 @@
       rand() {
         return Math.floor(Math.random() * 10)
       }
+    },
+    mounted() {
+      this.$store.dispatch("fetchAllCourses")
+      this.$store.dispatch("fetchAllStudents")
     }
   }
 </script>

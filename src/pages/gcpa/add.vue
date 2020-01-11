@@ -1,5 +1,5 @@
 <template>
-    <f7-page name="add-gcpa" class="bg-page"  @page:init="onPageInit">
+    <f7-page name="add-gcpa" class="bg-page"  @page:init="onPageInit" @page:before-remove="onPageBeforeRemove">
         <!-- Top Navbar -->
         <f7-navbar :sliding="false" color="white" navbar-fixed>
             <f7-nav-left>
@@ -29,7 +29,12 @@
                     <option value="first">First Semester</option>
                     <option value="second">Second Semester</option>
                 </f7-list-input>
+
                 <div style="margin-top: 60px;"></div>
+                   <f7-block strong v-if="loading">
+                        <p color="primary" style="text-align:center;">{{ loading ? "Loading" : ""  }}.</p>
+                    </f7-block>
+        
                 <div v-if="showCourses">
                     <f7-row no-gap class="form-row" v-if="newCoursesList.length > 0">
                         <f7-col width="70">
@@ -152,7 +157,10 @@
                     </f7-row>
                 </div>
             </f7-list>
-            <f7-button fill class="btn-submit" @click="saveGrade">SAVE GRADE</f7-button>
+            <f7-block strong v-if="message != null">
+                <p color="primary" style="text-align:center;">{{ message }}</p>
+            </f7-block>
+            <f7-button fill class="btn-submit" :disabled="!allowSave" @click="saveGrade">SAVE GRADE</f7-button>
 
 
         </f7-block>
@@ -171,6 +179,8 @@
         },
         data() {
             return {
+                loading: false,
+                message: null,
                 courses: [],
                 student:'',
                 form: {
@@ -211,6 +221,7 @@
                 coursesList:[],
                 newCoursesList:[],
                 showCourses: false,
+                allowSave: false,
             }
         },
         methods: {
@@ -244,10 +255,29 @@
                 this.coursesList = this.$store.getters.getCourses.filter(e => e.session.toLowerCase() == level.toLowerCase());
                 console.log(this.coursesList);
                 this.showCourses = false;
+                this.allowSave = false     
+            },
+            gradeChange(value) {
+                const grade = parseFloat(value);
+                const newGrade = (value/100) * 4
+                return newGrade;
+
             },
             saveGrade() {
+                console.log(this.form.course);
+                let formattedCourses = {}
+                const course = Object.entries(this.form.course).forEach(([key, val]) => {
+                    if (val['grade'] != "") {
+                        formattedCourses[key] = { 
+                            name: val['name'], 
+                            score: val['grade'],
+                            grade: this.gradeChange(val['grade']) 
+                        }
+                        //console.log(key + ':' + this.gradeChange(val['grade']))
+                    }
+                });
+                this.form.course = formattedCourses;
                 this.$f7.preloader.show();
-                console.log(this.form);
                 fire.firestore().collection("grades").add(this.form)
                 .then(res => {
                     this.$f7.preloader.hide();
@@ -258,6 +288,7 @@
                         closeButton: true,
                         closeButtonColor: 'white',
                     }); this.toastBottom.open();
+                    this.$f7router.navigate('/app/')
                 }).catch(err => {
                     console.log(err);
                 })
@@ -266,6 +297,7 @@
         mounted() {
             //this.onPageInit()
             this.courses = courses
+            console.log(this.students);
         },
         computed:{
             students(){
@@ -275,7 +307,7 @@
         watch:{
             student(value) {
                 if (value) {                    
-                    if (value.length > 5) {                    
+                    if (value.length > 5) {    
                         let student = this.students.filter(e => e.name.toLowerCase() == value.toLowerCase());
                         student = student.length == 1 ? student[0] : [];
                         this.form.student = student.id;
@@ -283,12 +315,37 @@
                         this.populateCourses(student.level);
                         this.form.semester = "";
                     }
-                }
+                }           
             },
-            'form.semester'(value) {
+            async 'form.semester'(value) {
+                this.loading = true;
+                this.message = null;
+                this.allowSave = false;
+                this.showCourses = false;
+
+               let ans =  await fire.firestore().collection("grades")
+                    .where('student', '==', this.form.student)
+                    .where('semester', '==', value)
+                    .get()
+                        const allGrade = [];
+                        ans.forEach(doc => {
+                            let grade = doc.data()
+                            grade.id = doc.id
+                            allGrade.push(grade);
+                        })
+                        //console.log(allGrade);
+                        console.log(allGrade.length);
+                        if (allGrade.length > 0) {
+                            this.loading = false;
+                            this.message = "Records Already Provided";
+                            //console.log("Records Available")
+                            return;
+                        } 
+                        this.loading = false;
                this.newCoursesList = this.coursesList.filter(e => e.semester.toLowerCase() == value.toLowerCase())
                console.log(this.newCoursesList);
                this.showCourses = true;
+               value.trim() != "" ? this.allowSave = true : this.allowSave = false;
             }
         }
     }

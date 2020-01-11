@@ -34,7 +34,7 @@
                     <f7-swipeout-button style="background: goldenrod;">
                         <f7-icon material="edit"></f7-icon>
                     </f7-swipeout-button>
-                    <f7-swipeout-button style="background: #b82f2f;" @click="confirmDelete(course)">
+                    <f7-swipeout-button v-if="false" style="background: #b82f2f;" @click="confirmDelete(course)">
                         <f7-icon material="delete_forever"></f7-icon>
                     </f7-swipeout-button>
                 </f7-swipeout-actions>
